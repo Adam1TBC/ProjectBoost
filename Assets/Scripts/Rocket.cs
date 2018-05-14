@@ -5,29 +5,31 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    Rigidbody rigidBody;
+
+    // Use this for initialization
+    void Start() {
+        rigidBody = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update() {
         ProcessInput();
-	}
+    }
 
     void ProcessInput() {
         if (Input.GetKey(KeyCode.Space)) // Can thust while rotating
         {
-            print("space pressed");
+            rigidBody.AddRelativeForce(Vector3.up);
         }
-        
-        if (Input.GetKey(KeyCode.A))
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            print("Rotating left");
+            transform.Rotate(Vector3.forward);
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            print("Rotating Right");
+            transform.Rotate(-Vector3.forward);
         }
     }
 }
