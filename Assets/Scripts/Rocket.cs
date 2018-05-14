@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour {
 
+    // Speed multiplyer
+    [SerializeField] float mainTrust = 100f;
+    [SerializeField] float rcsTrust = 100f; // Rotation
+
     Rigidbody rigidBody;
     AudioSource audioSource;
 
@@ -28,14 +32,16 @@ public class Rocket : MonoBehaviour {
     void Rotate() {
 
         rigidBody.freezeRotation = true; // take manual control of rotation
+        
+        float rotationThisFrame = rcsTrust * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Rotate(Vector3.forward);
+            transform.Rotate(Vector3.forward * rotationThisFrame);
         }
         else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Rotate(-Vector3.forward);
+            transform.Rotate(-Vector3.forward * rotationThisFrame);
         }
 
         rigidBody.freezeRotation = false; // resume physcis control of the rotation
@@ -44,7 +50,9 @@ public class Rocket : MonoBehaviour {
     void Trust() {
         if (Input.GetKey(KeyCode.Space)) // Can thust while rotating
         {
-            rigidBody.AddRelativeForce(Vector3.up);
+            float forceThisFrame = mainTrust * Time.deltaTime;
+
+            rigidBody.AddRelativeForce(Vector3.up * forceThisFrame);
 
             if (!audioSource.isPlaying) // When it doesn't layer
             {

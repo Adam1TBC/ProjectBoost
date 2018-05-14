@@ -195,16 +195,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 54508576891121582, guid: 3b0e2cbac553fb446b5a183fc7e17ca2,
-        type: 2}
-      propertyPath: m_Constraints
-      value: 56
-      objectReference: {fileID: 0}
-    - target: {fileID: 54508576891121582, guid: 3b0e2cbac553fb446b5a183fc7e17ca2,
-        type: 2}
-      propertyPath: m_Drag
-      value: 0.2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3b0e2cbac553fb446b5a183fc7e17ca2, type: 2}
   m_IsPrefabParent: 0
