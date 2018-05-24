@@ -6,6 +6,10 @@ public class Rocket : MonoBehaviour {
     // Speed multiplyer
     [SerializeField] float mainTrust = 100f;
     [SerializeField] float rcsTrust = 100f; // Rotation
+    [SerializeField] AudioClip mainEngineClip;
+    [SerializeField] AudioClip deathClip;
+    [SerializeField] AudioClip successClip;
+
 
     Rigidbody rigidBody;
     AudioSource audioSource;
@@ -21,14 +25,10 @@ public class Rocket : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        ProcessInput();
-    }
-
-    void ProcessInput() {
         if (state == State.Alive)
         {
-            Trust();
-            Rotate();
+            RespondToThrustInput();
+            RespondToRotateInput();
         }
     }
 
@@ -46,10 +46,14 @@ public class Rocket : MonoBehaviour {
                 break;
             case "Finish":
                 state = State.Transcending;
+                audioSource.Stop();
+                audioSource.PlayOneShot(successClip);
                 Invoke("LoadNextScene", 1f);
                 break;
             default:
                 state = State.Dying;
+                audioSource.Stop();
+                audioSource.PlayOneShot(deathClip);
                 Invoke("LoadFirstLevel", 1f);
                 break;
         }
@@ -66,7 +70,7 @@ public class Rocket : MonoBehaviour {
         SceneManager.LoadScene(1);
     }
 
-    void Rotate() {
+    void RespondToRotateInput() {
 
         rigidBody.freezeRotation = true; // take manual control of rotation
         
@@ -84,21 +88,26 @@ public class Rocket : MonoBehaviour {
         rigidBody.freezeRotation = false; // resume physcis control of the rotation
     }
 
-    void Trust() {
+    void RespondToThrustInput() {
         if (Input.GetKey(KeyCode.Space)) // Can thust while rotating
         {
-            float forceThisFrame = mainTrust * Time.deltaTime;
-
-            rigidBody.AddRelativeForce(Vector3.up * forceThisFrame);
-
-            if (!audioSource.isPlaying) // When it doesn't layer
-            {
-                audioSource.Play();
-            }
+            ApplyThrust();
         }
         else
         {
             audioSource.Stop(); // If the thuster doesn't work we stop audio
+        }
+    }
+
+    void ApplyThrust()
+    {
+        float forceThisFrame = mainTrust * Time.deltaTime;
+
+        rigidBody.AddRelativeForce(Vector3.up * forceThisFrame);
+
+        if (!audioSource.isPlaying) // When it doesn't layer
+        {
+            audioSource.PlayOneShot(mainEngineClip);
         }
     }
 }

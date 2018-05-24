@@ -394,9 +394,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b76e92362d6879c4f8569773eeaea470, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.11
   m_Pitch: 0.8
   Loop: 0
   Mute: 0
@@ -478,6 +478,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainTrust: 100
   rcsTrust: 100
+  mainEngineClip: {fileID: 8300000, guid: 2d0c2e876c6996d46aab839970468ecc, type: 3}
+  deathClip: {fileID: 8300000, guid: d7674e6089688f842a0ca3b9ae39c59a, type: 3}
+  successClip: {fileID: 8300000, guid: ac000ce74b5faea47820f862cdc233f9, type: 3}
 --- !u!135 &135302625987805110
 SphereCollider:
   m_ObjectHideFlags: 1
