@@ -6,9 +6,14 @@ public class Rocket : MonoBehaviour {
     // Speed multiplyer
     [SerializeField] float mainTrust = 100f;
     [SerializeField] float rcsTrust = 100f; // Rotation
+    //Audio
     [SerializeField] AudioClip mainEngineClip;
     [SerializeField] AudioClip deathClip;
     [SerializeField] AudioClip successClip;
+    //Particle system
+    [SerializeField] ParticleSystem mainEngineParticles;
+    [SerializeField] ParticleSystem deathParticles;
+    [SerializeField] ParticleSystem successParticles;
 
 
     Rigidbody rigidBody;
@@ -46,14 +51,20 @@ public class Rocket : MonoBehaviour {
                 break;
             case "Finish":
                 state = State.Transcending;
+
                 audioSource.Stop();
                 audioSource.PlayOneShot(successClip);
+
+                successParticles.Play();
                 Invoke("LoadNextScene", 1f);
                 break;
             default:
                 state = State.Dying;
+
                 audioSource.Stop();
                 audioSource.PlayOneShot(deathClip);
+
+                deathParticles.Play();
                 Invoke("LoadFirstLevel", 1f);
                 break;
         }
@@ -96,11 +107,11 @@ public class Rocket : MonoBehaviour {
         else
         {
             audioSource.Stop(); // If the thuster doesn't work we stop audio
+            mainEngineParticles.Stop();
         }
     }
 
-    void ApplyThrust()
-    {
+    void ApplyThrust() {
         float forceThisFrame = mainTrust * Time.deltaTime;
 
         rigidBody.AddRelativeForce(Vector3.up * forceThisFrame);
@@ -109,5 +120,7 @@ public class Rocket : MonoBehaviour {
         {
             audioSource.PlayOneShot(mainEngineClip);
         }
+
+        mainEngineParticles.Play();
     }
 }
