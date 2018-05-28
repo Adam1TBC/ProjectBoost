@@ -18,9 +18,8 @@ public class Rocket : MonoBehaviour {
 
     Rigidbody rigidBody;
     AudioSource audioSource;
-    
-    enum State { Alive, Dying, Transcending };
-    State state = State.Alive;
+
+    bool isTransitioning = false;
 
     // Use this for initialization
     void Start() {
@@ -30,7 +29,7 @@ public class Rocket : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (state == State.Alive)
+        if (!isTransitioning)
         {
             RespondToThrustInput();
             RespondToRotateInput();
@@ -39,7 +38,7 @@ public class Rocket : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision) {
 
-        if (state != State.Alive)
+        if (isTransitioning)
         {
             return;
         }
@@ -50,7 +49,7 @@ public class Rocket : MonoBehaviour {
                 // do nothing
                 break;
             case "Finish":
-                state = State.Transcending;
+                isTransitioning = true;
 
                 audioSource.Stop();
                 audioSource.PlayOneShot(successClip);
@@ -59,7 +58,7 @@ public class Rocket : MonoBehaviour {
                 Invoke("LoadNextScene", levelLoadDelay);
                 break;
             default:
-                state = State.Dying;
+                isTransitioning = true;
 
                 audioSource.Stop();
                 audioSource.PlayOneShot(deathClip);
